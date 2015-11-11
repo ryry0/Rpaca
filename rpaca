@@ -1,0 +1,174 @@
+#!/bin/bash
+
+# TODO
+# check if installed
+# check if uninstalled
+# check if installation conflict
+
+# Non overloaded variables:
+PKG_DIR="$HOME/rpaca-pacs" # where all packages are made + stored
+REPO_DIR="$HOME/rpaca-repo"
+SRC_DIR="$HOME/rpaca-sources"
+LOGFILE="$HOME/rpaca-prog/log"
+PKG_INDEX="$HOME/rpaca-index"
+GLOBAL_CFLAGS=""
+LOGGING=true
+DEBUG=true
+
+#---------------------------------------------------------------
+# Main functions
+
+checkConflicts() {
+	return
+}
+
+checkDeps() {
+	return
+}
+
+backupCurrent() {
+	return
+}
+
+loadBuildFile() {
+	logMessage "Loading $REPO_DIR/$PKG.rpac"
+	source $REPO_DIR/$PKG.rpac
+}
+ 
+loadTemplateBuild() {
+	source $REPO_DIR/template.rpac
+}
+
+logMessage() {
+	DATE_STRING=$(date +"[%D] %T")
+	if [ "$DEBUG" == "true" ]; then
+		echo $DATE_STRING - $1	
+	fi
+
+	if [ "$LOGGING" == "true" ]; then
+		echo $DATE_STRING - $1 >> $LOGFILE
+	fi
+}
+
+#---------------------------------------------------------------
+# From stackoverflow parse command line args in bash
+
+loadTemplateBuild
+
+while [[ $# > 0 ]]
+do 
+arg="$1"
+
+case $arg in
+	-d|--download)
+		PKG=$2
+		loadBuildFile
+		downloadSource
+	;;
+
+	-c|--compile)
+		PKG=$2
+		loadBuildFile
+		compileSource
+	;;
+
+	-e|--extract-source)
+		PKG=$2
+		loadBuildFile
+		extractSource
+	;;
+
+	--clean-source)
+		PKG=$2
+		loadBuildFile
+		cleanSource
+	;;
+
+	--check-source)
+		PKG=$2
+		loadBuildFile
+		checkSource
+	;;
+
+	-b|--build)
+		PKG=$2
+		loadBuildFile
+		buildPackage
+	;;
+
+	-i|--install)
+		PKG=$2
+		loadBuildFile
+		preinstallPackage
+		installPackage
+		postinstallPackage
+	;;
+
+	-I|--full-install)
+		PKG=$2
+		loadBuildFile
+		extractSource
+		compileSource
+		buildPackage
+		preinstallPackage
+		installPackage
+		postinstallPackage
+	;;
+
+	-S|--full-install-download)
+		PKG=$2
+		loadBuildFile
+		downloadSource
+		extractSource
+		compileSource
+		buildPackage
+		preinstallPackage
+		installPackage
+		postinstallPackage
+	;;
+
+	-r|--remove)
+		PKG=$2
+		loadBuildFile
+		preremovePackage
+		removePackage
+		postremovePackage
+	;;
+
+	-l|--list-installed)
+		ls -1 $PKG_INDEX
+	;;
+
+	-L|--list-installed-files)
+		PKG=$2
+		loadBuildFile
+		cat $PKG_INDEX/$PKG-$VER
+	;;
+
+	-s|--search)
+	;;
+
+	--delete-source)
+		PKG=$2
+		loadBuildFile
+		deleteSource
+	;;
+
+	--delete-download)
+		PKG=$2
+		loadBuildFile
+		deleteDownload
+	;;
+
+	--delete-package)
+		PKG=$2
+		loadBuildFile
+		deletePackage
+	;;
+
+	*) #default case
+	;;
+esac
+
+shift
+done
