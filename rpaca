@@ -5,13 +5,13 @@
 # check if uninstalled
 # check if installation conflict
 
-# Non overloaded variables:
+# Configuration variables: (overloaded by rpaca.conf)
 PKG_DIR="$HOME/rpaca-pacs" # where all packages are made + stored
 REPO_DIR="$HOME/rpaca-repo"
 SRC_DIR="$HOME/rpaca-sources"
 LOGFILE="$HOME/rpaca-prog/log"
 PKG_INDEX="$HOME/rpaca-index"
-GLOBAL_CFLAGS=""
+GLOBAL_CFLAGS="-j4"
 LOGGING=true
 DEBUG=true
 
@@ -51,10 +51,11 @@ logMessage() {
 }
 
 #---------------------------------------------------------------
-# From stackoverflow parse command line args in bash
 
 loadTemplateBuild
-
+# Load configuration
+# source /etc/rpaca.conf
+# From stackoverflow parse command line args in bash
 while [[ $# > 0 ]]
 do 
 arg="$1"
