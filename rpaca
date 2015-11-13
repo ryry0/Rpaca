@@ -144,6 +144,8 @@ case $arg in
 	;;
 
 	-s|--search)
+		ls $REPO_DIR/ -1 | sed 's/.rpac//' | grep $2
+		exit 0
 	;;
 
 	--delete-source)
