@@ -206,12 +206,16 @@ do
 		downloadSource
 	fi
 
-	if [ "$COMPILE" == "true" ]; then
-		compileSource
+	if [ "$EXTRACT" == "true" ]; then
+		extractSource
 	fi
 
-	if [ "$EXTRACT" == "true" ]; then
+	if [ "$CLEAN" == "true" ]; then
 		cleanSource
+	fi
+
+	if [ "$COMPILE" == "true" ]; then
+		compileSource
 	fi
 
 	if [ "$BUILD" == "true" ]; then
