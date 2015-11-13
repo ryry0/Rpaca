@@ -14,12 +14,12 @@ flags:
 * ~~-I|--full-install~~
 * ~~-L|--list-installed-files~~
 * --list-dependencies
-* ~~--delete-all-packages~~
-* ~~--delete-all-sources~~
+* --delete-all-packages
+* --delete-all-sources
 * --delete-all-downloads
 * --help
-* --debug
-* --log
+* ~~--debug~~
+* ~~--log~~
 
 other: 
 
