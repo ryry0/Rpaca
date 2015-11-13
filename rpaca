@@ -60,6 +60,22 @@ die() {
 
 #---------------------------------------------------------------
 
+DOWNLOAD=false
+COMPILE=false
+EXTRACT=false
+CLEAN=false
+CHECK=false
+BUILD=false
+INSTALL=false
+REMOVE=false
+LIST_INSTALLED_FILES=false
+SEARCH=false
+DEL_SOURCE=false
+DEL_DOWNLOAD=false
+DEL_PACKAGE=false
+
+PACKAGES=()
+
 loadTemplateBuild
 
 # Load configuration
@@ -72,114 +88,135 @@ arg="$1"
 
 case $arg in
 	-d|--download)
-		PKG=$2
-		loadBuildFile
-		downloadSource
+		DOWNLOAD=true
 	;;
 
 	-c|--compile)
-		PKG=$2
-		loadBuildFile
-		compileSource
+		COMPILE=true
 	;;
 
 	-e|--extract-source)
-		PKG=$2
-		loadBuildFile
-		extractSource
+		EXTRACT=true
 	;;
 
 	--clean-source)
-		PKG=$2
-		loadBuildFile
-		cleanSource
+		CLEAN=true
 	;;
 
 	--check-source)
-		PKG=$2
-		loadBuildFile
-		checkSource
+		CHECK=true
 	;;
 
 	-b|--build)
-		PKG=$2
-		loadBuildFile
-		buildPackage
+		BUILD=true
 	;;
 
 	-i|--install)
-		PKG=$2
-		loadBuildFile
-		preinstallPackage
-		installPackage
-		postinstallPackage
+		INSTALL=true
 	;;
 
 	-I|--full-install)
-		PKG=$2
-		loadBuildFile
-		extractSource
-		compileSource
-		buildPackage
-		preinstallPackage
-		installPackage
-		postinstallPackage
+		EXTRACT=true
+		COMPILE=true
+		BUILD=true
+		INSTALL=true
 	;;
 
 	-S|--full-install-download)
-		PKG=$2
-		loadBuildFile
-		downloadSource
-		extractSource
-		compileSource
-		buildPackage
-		preinstallPackage
-		installPackage
-		postinstallPackage
+		DOWNLOAD=true
+		EXTRACT=true
+		COMPILE=true
+		BUILD=true
+		INSTALL=true
 	;;
 
 	-r|--remove)
-		PKG=$2
-		loadBuildFile
-		preremovePackage
-		removePackage
-		postremovePackage
+		REMOVE=true
 	;;
 
 	-l|--list-installed)
 		ls -1 $PKG_INDEX
+		exit 0
 	;;
 
 	-L|--list-installed-files)
-		PKG=$2
-		loadBuildFile
-		cat $PKG_INDEX/$PKG-$VER
+		LIST_INSTALLED_FILES=true
 	;;
 
 	-s|--search)
 	;;
 
 	--delete-source)
-		PKG=$2
-		loadBuildFile
-		deleteSource
+		DEL_SOURCE=true
 	;;
 
 	--delete-download)
-		PKG=$2
-		loadBuildFile
-		deleteDownload
+		DEL_DOWNLOAD=true
 	;;
 
 	--delete-package)
-		PKG=$2
-		loadBuildFile
-		deletePackage
+		DEL_PACKAGE=true
 	;;
 
 	*) #default case
+		PACKAGES=("${PACKAGES[@]}" "$arg")
+		echo ${PACKAGES[@]}
 	;;
 esac
-
 shift
+done
+
+for i in "${PACKAGES[@]}"
+do
+	PKG="$i"
+	loadBuildFile
+
+	if [ "$REMOVE" == "true" ]; then
+		preremovePackage
+		removePackage
+		postremovePackage
+	fi
+
+	if [ "$DEL_DOWNLOAD" == "true" ]; then
+		deleteDownload
+	fi
+
+	if [ "$DEL_SOURCE" == "true" ]; then
+		deleteSource
+	fi
+
+	if [ "$DEL_PACKAGE" == "true" ]; then
+		deletePackage
+	fi
+
+	if [ "$LIST_INSTALLED" == "true" ]; then
+		cat $PKG_INDEX/$PKG-$VER
+	fi
+
+	if [ "$DOWNLOAD" == "true" ]; then
+		downloadSource
+	fi
+
+	if [ "$COMPILE" == "true" ]; then
+		compileSource
+	fi
+
+	if [ "$EXTRACT" == "true" ]; then
+		cleanSource
+	fi
+
+	if [ "$BUILD" == "true" ]; then
+		buildPackage
+	fi
+
+	if [ "$CHECK" == "true" ]; then
+		checkSource
+	fi
+
+	if [ "$INSTALL" == "true" ]; then
+		preinstallPackage
+		installPackage
+		postinstallPackage
+	fi
+
 done
