@@ -25,6 +25,7 @@ other:
 
 * Check if already downloaded.
 * Check if already installed.
+* Check if already uninstalled.
 * Run removal check fully and not per-file.
 * Report if stuff is successful, and only run if it is.
 * make each flag a boolean flag, so you can run any combination.
