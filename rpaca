@@ -1,17 +1,15 @@
 #!/bin/bash
 
-# TODO
-# check if installed
-# check if uninstalled
-# check if installation conflict
+CONFIG_FILE="$HOME/rpaca-prog/rpaca.conf" # should eventually be /etc/rpaca/rpaca.conf
 
 # Configuration variables: (overloaded by rpaca.conf)
+# Config defaults:
 PKG_DIR="$HOME/rpaca-pacs" # where all packages are made + stored
 REPO_DIR="$HOME/rpaca-repo"
 SRC_DIR="$HOME/rpaca-sources"
 LOGFILE="$HOME/rpaca-prog/log"
 PKG_INDEX="$HOME/rpaca-index"
-GLOBAL_CFLAGS="-j4"
+GLOBAL_CFLAGS=""
 LOGGING=true
 DEBUG=true
 
@@ -32,7 +30,7 @@ backupCurrent() {
 
 loadBuildFile() {
 	logMessage "Loading $REPO_DIR/$PKG.rpac"
-	source $REPO_DIR/$PKG.rpac
+	source $REPO_DIR/$PKG.rpac || die "$PKG.rpac not found"
 }
  
 loadTemplateBuild() {
@@ -50,11 +48,23 @@ logMessage() {
 	fi
 }
 
+die() {
+	DATE_STRING=$(date +"[%D] %T")
+	echo $DATE_STRING - $1
+
+	if [ "$LOGGING" == "true" ]; then
+		echo $DATE_STRING - $1 >> $LOGFILE
+	fi
+	exit 1
+}
+
 #---------------------------------------------------------------
 
 loadTemplateBuild
+
 # Load configuration
-# source /etc/rpaca.conf
+source $CONFIG_FILE
+
 # From stackoverflow parse command line args in bash
 while [[ $# > 0 ]]
 do 
