@@ -189,7 +189,7 @@ do
 		deletePackage
 	fi
 
-	if [ "$LIST_INSTALLED" == "true" ]; then
+	if [ "$LIST_INSTALLED_FILES" == "true" ]; then
 		cat $PKG_INDEX/$PKG-$VER
 	fi
 
