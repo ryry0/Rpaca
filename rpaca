@@ -160,9 +160,16 @@ case $arg in
 		DEL_PACKAGE=true
 	;;
 
+	--debug)
+		DEBUG=true
+	;;
+	
+	--log)
+		LOGGING=true
+	;;
+
 	*) #default case
 		PACKAGES=("${PACKAGES[@]}" "$arg")
-		echo ${PACKAGES[@]}
 	;;
 esac
 shift
