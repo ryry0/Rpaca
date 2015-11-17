@@ -14,6 +14,7 @@ flags:
 * ~~-I|--full-install~~
 * ~~-L|--list-installed-files~~
 * --list-dependencies
+* --info
 * --delete-all-packages
 * --delete-all-sources
 * --delete-all-downloads
@@ -32,6 +33,6 @@ other:
 * swizzling(?)
 * Prevent install if dependencies aren't met
 * ~~fix output when there is no file provided~~
-* meta packages
+* ~~meta packages~~
 * tie to rss feed or other site for automatic updating? possible sites: [freshcode](http://freshcode.club/) [fsf](http://directory.fsf.org/wiki/Main_Page)
 [archlinux feeds](https://www.archlinux.org/feeds) gentoo feeds
