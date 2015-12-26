@@ -148,6 +148,11 @@ case $arg in
 		exit 0
 	;;
 
+	-q|--query)
+		rpaca -l | grep -i $2
+		exit 0
+	;;
+
 	--delete-source)
 		DEL_SOURCE=true
 	;;
