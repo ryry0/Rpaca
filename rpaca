@@ -143,6 +143,11 @@ case $arg in
 		LIST_INSTALLED_FILES=true
 	;;
 
+	--list-repository-packages)
+		ls $REPO_DIR/ -1 | sed 's/.rpac//'
+		exit 0
+	;;
+
 	-s|--search)
 		ls $REPO_DIR/ -1 | sed 's/.rpac//' | grep $2
 		exit 0
