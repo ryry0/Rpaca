@@ -130,6 +130,13 @@ case $arg in
 		INSTALL=true
 	;;
 
+	-B|--build-download)
+		DOWNLOAD=true
+		EXTRACT=true
+		COMPILE=true
+		BUILD=true
+	;;
+
 	-r|--remove)
 		REMOVE=true
 	;;
